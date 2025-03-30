@@ -1,0 +1,71 @@
+from operator import index
+from tkinter import *
+from tkinter import messagebox
+
+num = 1
+
+def save(name_entry, phone_entry, problem_entry):
+    global num
+    n = True
+
+    if name_entry !='':
+        if name_entry.isdigit():
+            n = False
+            messagebox.showinfo(message="В ФИО не может быть цифр")
+
+    else:
+        n = False
+        messagebox.showerror(message="Обязательно напишите ФИО")
+
+    if phone_entry !='':
+        if phone_entry.isalpha() or not len(phone_entry)==11:
+            n = False
+            messagebox.showerror(message="В телефоне не может быть букв и должно быть только 11 символов")
+
+    else:
+        n = False
+        messagebox.showerror(message="Обязательно напишите номер телефона")
+
+    if problem_entry =='\n':
+        n = False
+        messagebox.showerror(message='Обязательно напишите нам положительный отзыв')
+
+    if n:
+        f = open(f'Пожелание №{num}.txt','w',encoding='utf-8')
+        f.write(f'ФИО: {name_entry}')
+        f.write(f'Телефон: {phone_entry}')
+        f.write(f'Пожелаение: {problem_entry}')
+        f.close()
+        messagebox.showinfo(message='Успешно!')
+        num += 1
+
+
+
+window = Tk()
+window.geometry('800x660')
+window.title('Сбор заказов')
+window.config()
+
+window.iconbitmap('chat_message_bubble_contact_icon_264244.ico')
+
+name_label=Label(window, text = 'ФИО')
+name_label.pack(pady=20)
+name_entry=Entry(window,width = 40, bg='pink')
+name_entry.pack(pady=20)
+
+phone_label=Label(window,text='Введите номер телефона',width = 40, bg='pink')
+phone_label.pack(pady=10)
+phone_entry=Entry(window,width = 40, bg='pink')
+phone_entry.pack(pady=10)
+
+problem_label=Label(window,text='Опишите проболему',width = 40, bg='pink')
+problem_label.pack(pady=10)
+problem_entry=Text(window,width = 40,height=6, bg='pink')
+problem_entry.pack(pady=10)
+
+
+
+frame = Frame(window, bg='pink').pack(pady=20)
+btn = Button(frame, text='Отправить', command=lambda :save(name_entry.get(),phone_entry.get(),problem_entry.get(1.0,END))).pack(pady=20)
+
+window.mainloop()
